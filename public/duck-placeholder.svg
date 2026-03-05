@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Duck placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d9f99d" />
+      <stop offset="100%" stop-color="#a7f3d0" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="url(#bg)" />
+  <ellipse cx="400" cy="305" rx="210" ry="120" fill="#fef3c7" />
+  <circle cx="280" cy="220" r="85" fill="#fde68a" />
+  <circle cx="260" cy="205" r="9" fill="#111827" />
+  <ellipse cx="212" cy="236" rx="40" ry="22" fill="#fb923c" />
+  <text x="400" y="470" font-size="36" text-anchor="middle" fill="#1f2937" font-family="Trebuchet MS, sans-serif">Duck image unavailable</text>
+</svg>
