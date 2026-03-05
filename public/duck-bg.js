@@ -106,9 +106,9 @@ if (canvas instanceof HTMLCanvasElement) {
       }
 
       if (feedArmed) {
-        setToastMessage("Bread armed. Click pond space to deploy carbs.");
+        setToastMessage("You're bready.");
       } else if (performance.now() < frenzyUntil) {
-        setToastMessage("Frenzy active. Maintain operational distance.");
+        setToastMessage("Good human.");
       } else {
         setToastMessage("Warning: Don't feed the ducks.");
       }
