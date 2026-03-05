@@ -4,12 +4,10 @@ const duckName = document.getElementById("duck-name");
 const duckImage = document.getElementById("duck-image");
 const duckDescription = document.getElementById("duck-description");
 const statusEl = document.getElementById("status");
-
 const dockCullBtn = document.getElementById("dock-cull");
 const dockMarryBtn = document.getElementById("dock-marry");
 const dockOrganizeBtn = document.getElementById("dock-organize");
 const dockAdviceBtn = document.getElementById("dock-advice");
-
 const adviceModal = document.getElementById("advice-modal");
 const adviceCloseBtn = document.getElementById("advice-close");
 
@@ -90,36 +88,16 @@ function downloadCertificate(humanName, duckPartner) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `duck-marriage-certificate-${duckPartner
-    .toLowerCase()
-    .replaceAll(/[^a-z0-9]+/g, "-")}.html`;
+  anchor.download = `duck-marriage-certificate-${duckPartner.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-")}.html`;
   document.body.append(anchor);
   anchor.click();
   anchor.remove();
   URL.revokeObjectURL(url);
 }
 
-function openModal(modal) {
-  if (modal instanceof HTMLElement) {
-    modal.classList.remove("hidden");
-  }
-}
-
-function closeModal(modal) {
-  if (modal instanceof HTMLElement) {
-    modal.classList.add("hidden");
-  }
-}
-
 async function generateDuck() {
-  if (!(statusEl instanceof HTMLElement)) {
-    return;
-  }
-
   statusEl.textContent = "Generating duck...";
-  if (generateBtn instanceof HTMLButtonElement) {
-    generateBtn.disabled = true;
-  }
+  generateBtn.disabled = true;
 
   try {
     const response = await fetch("/api/duck");
@@ -139,20 +117,10 @@ async function generateDuck() {
 
     const data = await response.json();
 
-    if (duckName instanceof HTMLElement) {
-      duckName.textContent = data.name;
-    }
-    if (duckImage instanceof HTMLImageElement) {
-      duckImage.src = data.imageUrl;
-    }
-    if (duckDescription instanceof HTMLElement) {
-      duckDescription.textContent = data.description;
-    }
-
-    if (result instanceof HTMLElement) {
-      result.classList.remove("hidden");
-    }
-
+    duckName.textContent = data.name;
+    duckImage.src = data.imageUrl;
+    duckDescription.textContent = data.description;
+    result.classList.remove("hidden");
     if (Array.isArray(data.warnings) && data.warnings.length > 0) {
       statusEl.textContent = `Generated with fallback: ${data.warnings[0]}`;
     } else {
@@ -161,22 +129,14 @@ async function generateDuck() {
   } catch (error) {
     statusEl.textContent = error instanceof Error ? error.message : "Unknown error";
   } finally {
-    if (generateBtn instanceof HTMLButtonElement) {
-      generateBtn.disabled = false;
-    }
+    generateBtn.disabled = false;
   }
 }
 
-if (generateBtn instanceof HTMLButtonElement) {
-  generateBtn.addEventListener("click", generateDuck);
-}
+generateBtn.addEventListener("click", generateDuck);
 
 if (dockCullBtn instanceof HTMLButtonElement) {
   dockCullBtn.addEventListener("click", () => {
-    if (!(statusEl instanceof HTMLElement)) {
-      return;
-    }
-
     statusEl.textContent = "Cull sequence running...";
 
     const onCullComplete = () => {
@@ -184,10 +144,11 @@ if (dockCullBtn instanceof HTMLButtonElement) {
 
       const rspbTab = window.open("https://www.rspb.org.uk/", "_blank", "noopener,noreferrer");
       if (rspbTab) {
+        // Best effort to keep user on current tab if browser allows.
         window.focus();
-        statusEl.textContent = "Pond cleared. RSPB opened in a new tab.";
+        statusEl.textContent = "I hope you're ducking happy.";
       } else {
-        statusEl.textContent = "Pond cleared. Allow pop-ups to open RSPB automatically.";
+        statusEl.textContent = "I hope you're ducking happy.";
       }
     };
 
@@ -198,15 +159,7 @@ if (dockCullBtn instanceof HTMLButtonElement) {
 
 if (dockMarryBtn instanceof HTMLButtonElement) {
   dockMarryBtn.addEventListener("click", async () => {
-    if (!(statusEl instanceof HTMLElement)) {
-      return;
-    }
-
-    const humanNameInput = window.prompt(
-      "Enter your name for the duck marriage certificate:",
-      "Mysterious Human"
-    );
-
+    const humanNameInput = window.prompt("Enter your name for the duck marriage certificate:", "Mysterious Human");
     if (humanNameInput === null) {
       statusEl.textContent = "Duck wedding cancelled.";
       return;
@@ -222,34 +175,44 @@ if (dockMarryBtn instanceof HTMLButtonElement) {
 if (dockOrganizeBtn instanceof HTMLButtonElement) {
   dockOrganizeBtn.addEventListener("click", () => {
     window.dispatchEvent(new CustomEvent("duck:organize"));
-    if (statusEl instanceof HTMLElement) {
-      statusEl.textContent = "Ducks organized into formation. Excess ducks removed.";
-    }
+    statusEl.textContent = "Ducks organized into formation. Excess ducks removed.";
   });
+}
+
+function openAdviceModal() {
+  if (adviceModal instanceof HTMLElement) {
+    adviceModal.classList.remove("hidden");
+  }
+}
+
+function closeAdviceModal() {
+  if (adviceModal instanceof HTMLElement) {
+    adviceModal.classList.add("hidden");
+  }
 }
 
 if (dockAdviceBtn instanceof HTMLButtonElement) {
   dockAdviceBtn.addEventListener("click", () => {
-    openModal(adviceModal);
+    openAdviceModal();
   });
 }
 
 if (adviceCloseBtn instanceof HTMLButtonElement) {
   adviceCloseBtn.addEventListener("click", () => {
-    closeModal(adviceModal);
+    closeAdviceModal();
   });
 }
 
 if (adviceModal instanceof HTMLElement) {
   adviceModal.addEventListener("click", (event) => {
     if (event.target === adviceModal) {
-      closeModal(adviceModal);
+      closeAdviceModal();
     }
   });
 }
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    closeModal(adviceModal);
+    closeAdviceModal();
   }
 });
