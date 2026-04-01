@@ -1,6 +1,21 @@
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_MODEL = "arcee-ai/trinity-mini:free";
 
+export interface OpenRouterEnv {
+  OPENROUTER_API_KEY?: string;
+  OPENROUTER_MODEL?: string;
+  VITE_OPENROUTER_API_KEY?: string;
+  VITE_OPENROUTER_MODEL?: string;
+}
+
+function getRuntimeEnv(): OpenRouterEnv {
+  if (typeof process === "undefined" || !process.env) {
+    return {};
+  }
+
+  return process.env;
+}
+
 function parseModels(rawModel: string | undefined): string[] {
   if (!rawModel) {
     return [DEFAULT_MODEL];
@@ -14,9 +29,9 @@ function parseModels(rawModel: string | undefined): string[] {
   return parsed.length > 0 ? parsed : [DEFAULT_MODEL];
 }
 
-export function getOpenRouterConfig() {
-  const apiKey = process.env.OPENROUTER_API_KEY || process.env.VITE_OPENROUTER_API_KEY;
-  const models = parseModels(process.env.OPENROUTER_MODEL || process.env.VITE_OPENROUTER_MODEL);
+export function getOpenRouterConfig(env: OpenRouterEnv = getRuntimeEnv()) {
+  const apiKey = env.OPENROUTER_API_KEY || env.VITE_OPENROUTER_API_KEY;
+  const models = parseModels(env.OPENROUTER_MODEL || env.VITE_OPENROUTER_MODEL);
 
   return { apiKey, models };
 }
@@ -149,11 +164,14 @@ async function requestDuckDescription(apiKey: string, model: string, duckName: s
   throw new Error(`[${model}] OpenRouter response did not include text content.`);
 }
 
-export async function generateDuckDescription(duckName: string): Promise<string> {
-  const { apiKey, models } = getOpenRouterConfig();
+export async function generateDuckDescription(
+  duckName: string,
+  env: OpenRouterEnv = getRuntimeEnv()
+): Promise<string> {
+  const { apiKey, models } = getOpenRouterConfig(env);
 
   if (!apiKey) {
-    throw new Error("Missing OpenRouter API key. Set OPENROUTER_API_KEY in .env");
+    throw new Error("Missing OpenRouter API key.");
   }
 
   const failures: string[] = [];

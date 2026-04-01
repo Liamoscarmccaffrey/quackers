@@ -10,5 +10,5 @@
     "outDir": "dist",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "openrouter.ts"]
+  "include": ["src/**/*.ts", "functions/**/*.ts", "openrouter.ts"]
 }
